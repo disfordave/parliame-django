@@ -35,7 +35,7 @@ Enforcing strict logical constraints at the database level:
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/disfordave/parliame-django.git](https://github.com/disfordave/parliame-django.git)
+   git clone https://github.com/disfordave/parliame-django.git
    cd parliame-django
    ```
 
