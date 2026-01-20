@@ -22,6 +22,7 @@ class ChamberViewSet(viewsets.ModelViewSet):
     serializer_class = ChamberSerializer
     lookup_field = "slug"
     permission_classes = [IsAdminOrReadOnly]
+    filterset_fields = ["country"]
 
 
 class PartyViewSet(viewsets.ModelViewSet):
@@ -29,6 +30,7 @@ class PartyViewSet(viewsets.ModelViewSet):
     serializer_class = PartySerializer
     lookup_field = "slug"
     permission_classes = [IsAdminOrReadOnly]
+    filterset_fields = ["country", "is_independent"]
 
 
 class PollViewSet(viewsets.ModelViewSet):
@@ -36,3 +38,4 @@ class PollViewSet(viewsets.ModelViewSet):
     serializer_class = PollSerializer
     lookup_field = "slug"
     permission_classes = [IsAdminOrReadOnly]
+    filterset_fields = ["chamber", "official", "type", "date"]
