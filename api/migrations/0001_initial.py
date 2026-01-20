@@ -5,83 +5,166 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Country',
+            name="Country",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(max_length=10, unique=True)),
-                ('name', models.CharField(max_length=100)),
-                ('emoji', models.CharField(blank=True, max_length=10)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("code", models.CharField(max_length=10, unique=True)),
+                ("name", models.CharField(max_length=100)),
+                ("emoji", models.CharField(blank=True, max_length=10)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Chamber',
+            name="Chamber",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('slug', models.CharField(max_length=50, unique=True)),
-                ('name', models.CharField(max_length=200)),
-                ('short_name', models.CharField(max_length=50)),
-                ('total_seats', models.IntegerField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('country', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chambers', to='api.country')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("slug", models.CharField(max_length=50, unique=True)),
+                ("name", models.CharField(max_length=200)),
+                ("short_name", models.CharField(max_length=50)),
+                ("total_seats", models.IntegerField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "country",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="chambers",
+                        to="api.country",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Party',
+            name="Party",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('slug', models.CharField(max_length=50, unique=True)),
-                ('name', models.CharField(max_length=200)),
-                ('short_name', models.CharField(max_length=50)),
-                ('colour', models.CharField(max_length=20)),
-                ('position', models.IntegerField()),
-                ('is_independent', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('country', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parties', to='api.country')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("slug", models.CharField(max_length=50, unique=True)),
+                ("name", models.CharField(max_length=200)),
+                ("short_name", models.CharField(max_length=50)),
+                ("colour", models.CharField(max_length=20)),
+                ("position", models.IntegerField()),
+                ("is_independent", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "country",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="parties",
+                        to="api.country",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Parties',
+                "verbose_name_plural": "Parties",
             },
         ),
         migrations.CreateModel(
-            name='Poll',
+            name="Poll",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('slug', models.CharField(max_length=100, unique=True)),
-                ('name', models.CharField(max_length=200)),
-                ('type', models.CharField(choices=[('election', 'Election'), ('poll', 'Poll')], default='poll', max_length=20)),
-                ('date', models.DateField()),
-                ('polling_firm', models.CharField(blank=True, max_length=100, null=True)),
-                ('sample_size', models.IntegerField(blank=True, null=True)),
-                ('margin_of_error', models.FloatField(blank=True, null=True)),
-                ('official', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('chamber', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.chamber')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("slug", models.CharField(max_length=100, unique=True)),
+                ("name", models.CharField(max_length=200)),
+                (
+                    "type",
+                    models.CharField(
+                        choices=[("election", "Election"), ("poll", "Poll")],
+                        default="poll",
+                        max_length=20,
+                    ),
+                ),
+                ("date", models.DateField()),
+                (
+                    "polling_firm",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                ("sample_size", models.IntegerField(blank=True, null=True)),
+                ("margin_of_error", models.FloatField(blank=True, null=True)),
+                ("official", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "chamber",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="api.chamber"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='PollResult',
+            name="PollResult",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('seats', models.IntegerField(blank=True, null=True)),
-                ('vote_share', models.FloatField(blank=True, null=True)),
-                ('party', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.party')),
-                ('poll', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='results', to='api.poll')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("seats", models.IntegerField(blank=True, null=True)),
+                ("vote_share", models.FloatField(blank=True, null=True)),
+                (
+                    "party",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="api.party"
+                    ),
+                ),
+                (
+                    "poll",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="results",
+                        to="api.poll",
+                    ),
+                ),
             ],
             options={
-                'constraints': [models.UniqueConstraint(fields=('poll', 'party'), name='uniq_pollresult_poll_party')],
+                "constraints": [
+                    models.UniqueConstraint(
+                        fields=("poll", "party"), name="uniq_pollresult_poll_party"
+                    )
+                ],
             },
         ),
     ]

@@ -1,12 +1,13 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
+
 # 1. Country Model
 class Country(models.Model):
     code = models.CharField(max_length=10, unique=True)  # e.g. "be"
-    name = models.CharField(max_length=100)              # e.g. "Belgium"
+    name = models.CharField(max_length=100)  # e.g. "Belgium"
     emoji = models.CharField(max_length=10, blank=True)  # e.g. "🇧🇪"
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -20,13 +21,15 @@ class Country(models.Model):
 
 # 2. Chamber Model
 class Chamber(models.Model):
-    slug = models.CharField(max_length=50, unique=True) # e.g. "be-federal"
-    
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='chambers')
-    
-    name = models.CharField(max_length=200)       # "De Kamer/La Chambre"
+    slug = models.CharField(max_length=50, unique=True)  # e.g. "be-federal"
+
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, related_name="chambers"
+    )
+
+    name = models.CharField(max_length=200)  # "De Kamer/La Chambre"
     short_name = models.CharField(max_length=50)  # "Fed"
-    total_seats = models.IntegerField()           # 150
+    total_seats = models.IntegerField()  # 150
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -41,15 +44,17 @@ class Chamber(models.Model):
 
 # 3. Party Model
 class Party(models.Model):
-    slug = models.CharField(max_length=50, unique=True) # e.g. "be-nva"
-    
+    slug = models.CharField(max_length=50, unique=True)  # e.g. "be-nva"
+
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=50)
-    colour = models.CharField(max_length=20)    # Hex codes or names
-    position = models.IntegerField()            # Political position (spectrum)
+    colour = models.CharField(max_length=20)  # Hex codes or names
+    position = models.IntegerField()  # Political position (spectrum)
     is_independent = models.BooleanField(default=False)
-    
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='parties')
+
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, related_name="parties"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,7 +65,7 @@ class Party(models.Model):
     def save(self, *args, **kwargs):
         self.slug = self.slug.lower()
         super().save(*args, **kwargs)
-    
+
     class Meta:
         verbose_name_plural = "Parties"
 
@@ -68,22 +73,20 @@ class Party(models.Model):
 # 4. Poll Model
 class Poll(models.Model):
     class PollType(models.TextChoices):
-        ELECTION = 'election', 'Election'
-        POLL = 'poll', 'Poll'
+        ELECTION = "election", "Election"
+        POLL = "poll", "Poll"
 
     slug = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=200)
 
     chamber = models.ForeignKey(Chamber, on_delete=models.CASCADE)
-    
+
     type = models.CharField(
-        max_length=20,
-        choices=PollType.choices,
-        default=PollType.POLL
+        max_length=20, choices=PollType.choices, default=PollType.POLL
     )
-    
+
     date = models.DateField()
-    
+
     polling_firm = models.CharField(max_length=100, blank=True, null=True)
     sample_size = models.IntegerField(blank=True, null=True)
     margin_of_error = models.FloatField(blank=True, null=True)
@@ -106,9 +109,9 @@ class Poll(models.Model):
 
 # 5. PollResult Model
 class PollResult(models.Model):
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name='results')
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name="results")
     party = models.ForeignKey(Party, on_delete=models.CASCADE)
-    
+
     seats = models.IntegerField(blank=True, null=True)
     vote_share = models.FloatField(blank=True, null=True)
 
@@ -117,7 +120,9 @@ class PollResult(models.Model):
         if self.poll_id and self.party_id:
             if self.poll.chamber.country_id != self.party.country_id:
                 raise ValidationError(
-                    {"party": "Party must belong to the same country as the poll's chamber."}
+                    {
+                        "party": "Party must belong to the same country as the poll's chamber."
+                    }
                 )
 
     def save(self, *args, **kwargs):
