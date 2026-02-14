@@ -7,7 +7,7 @@ venv/
 .venv/
 env/
 .env/
-.env.*
+.env
 
 # Django local/dev artifacts
 db.sqlite3
