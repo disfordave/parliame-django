@@ -1,4 +1,4 @@
-# Parliame API Server (Django)
+# parliament-seats Demo API Server (Django)
 
 > Backend of [Parliame.com](https://parliame.com) (Migration is underway)
 
